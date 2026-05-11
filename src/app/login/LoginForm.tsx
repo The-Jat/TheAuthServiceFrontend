@@ -6,10 +6,14 @@ export default function LoginForm({
   client_id,
   redirect_uri,
   state,
+  code_challenge,
+  code_challenge_method,
 }: {
   client_id: string;
   redirect_uri: string;
   state: string;
+  code_challenge: string;
+  code_challenge_method: string;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +38,8 @@ export default function LoginForm({
           client_id,
           redirect_uri,
           state,
+          code_challenge,
+          code_challenge_method,
         }),
       }
     );
