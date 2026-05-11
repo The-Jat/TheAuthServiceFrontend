@@ -26,7 +26,7 @@ export default function LoginForm({
     console.log(state);
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_AUTH_API}/auth/login`,
+      `${process.env.NEXT_PUBLIC_OAUTH_BASE_URL}${process.env.NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT}`,
       {
         method: "POST",
         headers: {
