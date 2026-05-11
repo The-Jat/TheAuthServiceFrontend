@@ -1,9 +1,11 @@
+// app/oauth/callback/page.tsx
+
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function CallbackPage() {
+function CallbackHandler() {
   const params = useSearchParams();
 
   useEffect(() => {
@@ -13,7 +15,7 @@ export default function CallbackPage() {
       if (!code) return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_API}/auth/token`,
+        `${process.env.NEXT_PUBLIC_AUTH_API}/oauth/token`,
         {
           method: "POST",
 
@@ -29,7 +31,7 @@ export default function CallbackPage() {
             client_secret: "secret123",
 
             redirect_uri:
-              "http://localhost:3001/callback",
+              "http://localhost:3001/oauth/callback",
           }),
         }
       );
@@ -52,7 +54,15 @@ export default function CallbackPage() {
     }
 
     exchangeCode();
-  }, []);
+  }, [params]);
 
   return <div>Logging in...</div>;
+}
+
+export default function CallbackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CallbackHandler />
+    </Suspense>
+  );
 }
