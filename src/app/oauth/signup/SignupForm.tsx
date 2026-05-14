@@ -23,7 +23,7 @@ export default function SignupForm() {
       console.log("Starting signup...");
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_API}/auth/signup`,
+        `${process.env.NEXT_PUBLIC_OAUTH_BASE_URL}${process.env.NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT}`,
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ export default function SignupForm() {
       // redirect to login after signup
 
       setTimeout(() => {
-        window.location.href = "/login";
+        window.location.href = `${process.env.NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT}`;
       }, 1500);
 
     } catch (err: any) {
