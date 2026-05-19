@@ -17,6 +17,7 @@ export default function LoginForm({
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -47,6 +48,18 @@ export default function LoginForm({
     const data = await response.json();
     console.log(data);
 
+    if (!response.ok) {
+      setError(data.message || "Login failed");
+      return;
+    }
+
+    if (!data.redirect_to) {
+      setError("Invalid redirect URL");
+      return;
+    }
+
+    setError("");
+
     window.location.href = data.redirect_to;
     // alert(JSON.stringify(data));
   }
@@ -58,7 +71,11 @@ export default function LoginForm({
         className="border p-6 rounded-xl w-[350px] space-y-4"
       >
         <h1 className="text-2xl font-bold">Login</h1>
-
+        {error && (
+          <p className="text-red-500 text-sm">
+            {error}
+          </p>
+        )}
         <input
           className="border p-2 w-full rounded"
           type="email"
