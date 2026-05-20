@@ -70,124 +70,30 @@ export default function LoginForm({
   }
 
   return (
-    <div
-      className="
-        min-h-screen
-        flex
-        items-center
-        justify-center
-        px-4
-        bg-gradient-to-br
-        from-slate-100
-        via-white
-        to-slate-200
-        relative
-        overflow-hidden
-      "
-    >
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-slate-100 via-white to-slate-200 relative overflow-hidden">
       {/* background blur circles */}
-      <div
-        className="
-          absolute
-          top-[-120px]
-          left-[-120px]
-          h-[320px]
-          w-[320px]
-          rounded-full
-          bg-blue-200/40
-          blur-3xl
-        "
-      />
+      <div className="absolute top-[-120px] left-[-120px] h-[320px] w-[320px] rounded-full bg-blue-200/40 blur-3xl"/>
+      <div className="absolute bottom-[-120px] right-[-120px] h-[320px] w-[320px] rounded-full bg-indigo-200/40 blur-3xl"/>
 
-      <div
-        className="
-          absolute
-          bottom-[-120px]
-          right-[-120px]
-          h-[320px]
-          w-[320px]
-          rounded-full
-          bg-indigo-200/40
-          blur-3xl
-        "
-      />
-
-      <form
-        onSubmit={handleLogin}
-        className="
-          relative
-          z-10
-          w-full
-          max-w-md
-          rounded-3xl
-          border
-          border-white/40
-          bg-white/80
-          backdrop-blur-xl
-          shadow-2xl
-          px-8
-          py-10
-          space-y-5
-        "
-      >
+      <form onSubmit={handleLogin} className="relative z-10 w-full max-w-md rounded-3xl border border-white/40 bg-white/80 backdrop-blur-xl shadow-2xl px-8 py-10 space-y-5">
         <div className="space-y-1">
-          <h1
-            className="
-              text-3xl
-              font-bold
-              tracking-tight
-              text-slate-900
-            "
-          >
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
             Welcome back
           </h1>
 
-          <p
-            className="
-              text-sm
-              text-slate-500
-            "
-          >
+          <p className="text-sm text-slate-500">
             Sign in to continue
           </p>
         </div>
 
         {error && (
-          <div
-            className="
-              rounded-xl
-              border
-              border-red-200
-              bg-red-50
-              px-4
-              py-3
-              text-sm
-              text-red-600
-            "
-          >
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
             {error}
           </div>
         )}
 
         <div className="space-y-3">
-          <input
-            className="
-              w-full
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              px-4
-              py-3
-              text-sm
-              text-slate-900
-              outline-none
-              transition
-              focus:border-blue-500
-              focus:ring-4
-              focus:ring-blue-100
-              placeholder:text-slate-400
-            "
+          <input className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 placeholder:text-slate-400"
             type="email"
             placeholder="Email address"
             value={email}
@@ -198,24 +104,7 @@ export default function LoginForm({
             }
           />
 
-          <input
-            className="
-              w-full
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              px-4
-              py-3
-              text-sm
-              text-slate-900
-              outline-none
-              transition
-              focus:border-blue-500
-              focus:ring-4
-              focus:ring-blue-100
-              placeholder:text-slate-400
-            "
+          <input className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100 placeholder:text-slate-400"
             type="password"
             placeholder="Password"
             value={password}
@@ -229,29 +118,12 @@ export default function LoginForm({
 
         <button
           type="submit"
-          className="
-            w-full
-            rounded-xl
-            bg-slate-900
-            text-white
-            py-3
-            text-sm
-            font-medium
-            transition
-            hover:bg-slate-800
-            active:scale-[0.99]
-          "
+          className="w-full rounded-xl bg-slate-900 text-white py-3 text-sm font-medium transition hover:bg-slate-800 active:scale-[0.99]"
         >
           Sign In
         </button>
 
-        <div
-          className="
-            text-center
-            text-sm
-            text-slate-500
-          "
-        >
+        <div className="text-center text-sm text-slate-500">
           Don&apos;t have an
           account?{" "}
 
@@ -261,12 +133,7 @@ export default function LoginForm({
                 .NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT ||
               "/oauth/signup"
             }
-            className="
-              font-medium
-              text-slate-900
-              hover:text-blue-600
-              transition
-            "
+            className="font-medium text-slate-900 hover:text-blue-600 transition"
           >
             Create account
           </Link>
