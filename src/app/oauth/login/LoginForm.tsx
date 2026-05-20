@@ -20,7 +20,9 @@ export default function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent,
+
+  ) {
     e.preventDefault();
 
     console.log(client_id);
@@ -34,6 +36,7 @@ export default function LoginForm({
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify({
           email,
           password,
@@ -43,73 +46,227 @@ export default function LoginForm({
           code_challenge,
           code_challenge_method,
         }),
-      }
+      },
     );
 
     const data = await response.json();
     console.log(data);
 
     if (!response.ok) {
-      setError(data.message || "Login failed");
+      setError(data.message || "Login failed",);
+
       return;
     }
 
     if (!data.redirect_to) {
-      setError("Invalid redirect URL");
+      setError("Invalid redirect URL",);
+
       return;
     }
 
     setError("");
 
     window.location.href = data.redirect_to;
-    // alert(JSON.stringify(data));
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div
+      className="
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        px-4
+        bg-gradient-to-br
+        from-slate-100
+        via-white
+        to-slate-200
+        relative
+        overflow-hidden
+      "
+    >
+      {/* background blur circles */}
+      <div
+        className="
+          absolute
+          top-[-120px]
+          left-[-120px]
+          h-[320px]
+          w-[320px]
+          rounded-full
+          bg-blue-200/40
+          blur-3xl
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-[-120px]
+          right-[-120px]
+          h-[320px]
+          w-[320px]
+          rounded-full
+          bg-indigo-200/40
+          blur-3xl
+        "
+      />
+
       <form
         onSubmit={handleLogin}
-        className="border p-6 rounded-xl w-[350px] space-y-4"
+        className="
+          relative
+          z-10
+          w-full
+          max-w-md
+          rounded-3xl
+          border
+          border-white/40
+          bg-white/80
+          backdrop-blur-xl
+          shadow-2xl
+          px-8
+          py-10
+          space-y-5
+        "
       >
-        <h1 className="text-2xl font-bold">Login</h1>
-        {error && (
-          <p className="text-red-500 text-sm">
-            {error}
-          </p>
-        )}
-        <input
-          className="border p-2 w-full rounded"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <div className="space-y-1">
+          <h1
+            className="
+              text-3xl
+              font-bold
+              tracking-tight
+              text-slate-900
+            "
+          >
+            Welcome back
+          </h1>
 
-        <input
-          className="border p-2 w-full rounded"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <p
+            className="
+              text-sm
+              text-slate-500
+            "
+          >
+            Sign in to continue
+          </p>
+        </div>
+
+        {error && (
+          <div
+            className="
+              rounded-xl
+              border
+              border-red-200
+              bg-red-50
+              px-4
+              py-3
+              text-sm
+              text-red-600
+            "
+          >
+            {error}
+          </div>
+        )}
+
+        <div className="space-y-3">
+          <input
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              focus:border-blue-500
+              focus:ring-4
+              focus:ring-blue-100
+              placeholder:text-slate-400
+            "
+            type="email"
+            placeholder="Email address"
+            value={email}
+            onChange={(e) =>
+              setEmail(
+                e.target.value,
+              )
+            }
+          />
+
+          <input
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              focus:border-blue-500
+              focus:ring-4
+              focus:ring-blue-100
+              placeholder:text-slate-400
+            "
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(
+                e.target.value,
+              )
+            }
+          />
+        </div>
 
         <button
           type="submit"
-          className="bg-black text-white p-2 rounded w-full"
+          className="
+            w-full
+            rounded-xl
+            bg-slate-900
+            text-white
+            py-3
+            text-sm
+            font-medium
+            transition
+            hover:bg-slate-800
+            active:scale-[0.99]
+          "
         >
-          Login
+          Sign In
         </button>
 
-        <div className="text-sm text-center">
-          Don&apos;t have an account?{" "}
+        <div
+          className="
+            text-center
+            text-sm
+            text-slate-500
+          "
+        >
+          Don&apos;t have an
+          account?{" "}
 
           <Link
-            href={{
-              pathname: process.env.NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT
-              || "/oauth/signup",
-              
-            }}
-            className="text-blue-600 hover:underline"
+            href={
+              process.env
+                .NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT ||
+              "/oauth/signup"
+            }
+            className="
+              font-medium
+              text-slate-900
+              hover:text-blue-600
+              transition
+            "
           >
             Create account
           </Link>

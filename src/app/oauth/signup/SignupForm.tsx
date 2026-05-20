@@ -51,7 +51,6 @@ export default function SignupForm() {
 
       setSuccess("Account created successfully");
 
-      // OPTIONAL:
       // redirect to login after signup
 
       setTimeout(() => {
@@ -68,79 +67,241 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div
+      className="
+      min-h-screen
+      flex
+      items-center
+      justify-center
+      px-4
+      bg-gradient-to-br
+      from-zinc-100
+      via-white
+      to-zinc-200
+      relative
+      overflow-hidden
+    "
+    >
+      {/* background blur circles */}
+      <div
+        className="
+        absolute
+        top-[-150px]
+        left-[-150px]
+        h-[400px]
+        w-[400px]
+        rounded-full
+        bg-blue-200
+        blur-3xl
+        opacity-40
+      "
+      />
+
+      <div
+        className="
+        absolute
+        bottom-[-150px]
+        right-[-150px]
+        h-[400px]
+        w-[400px]
+        rounded-full
+        bg-purple-200
+        blur-3xl
+        opacity-40
+      "
+      />
+
       <form
         onSubmit={handleSignup}
-        className="border p-6 rounded-xl w-[350px] space-y-4"
+        className="
+        relative
+        z-10
+        w-full
+        max-w-md
+        rounded-3xl
+        bg-white/80
+        backdrop-blur-xl
+        border
+        border-white/30
+        shadow-2xl
+        px-8
+        py-10
+        space-y-5
+      "
       >
-        <h1 className="text-2xl font-bold">
-          Create Account
-        </h1>
+        <div className="space-y-1">
+          <h1
+            className="
+            text-3xl
+            font-bold
+            tracking-tight
+            text-zinc-900
+          "
+          >
+            Create Account
+          </h1>
+
+          <p className="text-sm text-zinc-500">
+            Continue to The Auth Service
+          </p>
+        </div>
 
         {error && (
-          <div className="text-red-500 text-sm">
+          <div
+            className="
+            text-sm
+            text-red-600
+            border
+            border-red-200
+            bg-red-50
+            rounded-xl
+            px-3
+            py-2
+          "
+          >
             {error}
           </div>
         )}
 
         {success && (
-          <div className="text-green-600 text-sm">
+          <div
+            className="
+            text-sm
+            text-green-700
+            border
+            border-green-200
+            bg-green-50
+            rounded-xl
+            px-3
+            py-2
+          "
+          >
             {success}
           </div>
         )}
 
-        <input
-          className="border p-2 w-full rounded"
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) =>
-            setName(e.target.value)
-          }
-        />
+        <div className="space-y-3">
+          <input
+            className="
+            w-full
+            rounded-xl
+            border
+            border-zinc-300
+            bg-white
+            px-4
+            py-3
+            text-sm
+            text-black
+            outline-none
+            transition
+            focus:border-blue-500
+            focus:ring-4
+            focus:ring-blue-100
+            placeholder:text-zinc-400
+          "
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
+          />
 
-        <input
-          className="border p-2 w-full rounded"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) =>
-            setEmail(e.target.value)
-          }
-        />
+          <input
+            className="
+            w-full
+            rounded-xl
+            border
+            border-zinc-300
+            bg-white
+            px-4
+            py-3
+            text-sm
+            text-black
+            outline-none
+            transition
+            focus:border-blue-500
+            focus:ring-4
+            focus:ring-blue-100
+            placeholder:text-zinc-400
+          "
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+          />
 
-        <input
-          className="border p-2 w-full rounded"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) =>
-            setPassword(e.target.value)
-          }
-        />
+          <input
+            className="
+            w-full
+            rounded-xl
+            border
+            border-zinc-300
+            bg-white
+            px-4
+            py-3
+            text-sm
+            text-black
+            outline-none
+            transition
+            focus:border-blue-500
+            focus:ring-4
+            focus:ring-blue-100
+            placeholder:text-zinc-400
+          "
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+          />
+        </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="bg-black text-white p-2 rounded w-full"
+          className="
+          w-full
+          rounded-xl
+          bg-black
+          text-white
+          py-3
+          text-sm
+          font-medium
+          transition
+          hover:opacity-90
+          disabled:opacity-50
+        "
         >
-          {loading ? "Creating..." : "Sign Up"}
+          {loading
+            ? "Creating..."
+            : "Sign Up"}
         </button>
 
-        <div className="text-sm text-center">
+        <div
+          className="
+          text-center
+          text-sm
+          text-zinc-500
+        "
+        >
           Already have an account?{" "}
 
           <Link
-            href={{
-              pathname:
-                process.env
-                  .NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT
-                || "/oauth/login",
-            }}
+            href={
+              process.env
+                .NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT ||
+              "/oauth/login"
+            }
             className="
-      text-blue-600
-      hover:underline
-    "
+            font-medium
+            text-black
+            hover:text-blue-600
+            transition
+          "
           >
             Sign in
           </Link>
