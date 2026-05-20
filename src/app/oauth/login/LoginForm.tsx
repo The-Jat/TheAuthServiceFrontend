@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function LoginForm({
   client_id,
@@ -98,6 +99,21 @@ export default function LoginForm({
         >
           Login
         </button>
+
+        <div className="text-sm text-center">
+          Don&apos;t have an account?{" "}
+
+          <Link
+            href={{
+              pathname: process.env.NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT
+              || "/oauth/signup",
+              
+            }}
+            className="text-blue-600 hover:underline"
+          >
+            Create account
+          </Link>
+        </div>
       </form>
     </div>
   );

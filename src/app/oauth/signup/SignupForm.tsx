@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -125,6 +126,25 @@ export default function SignupForm() {
         >
           {loading ? "Creating..." : "Sign Up"}
         </button>
+
+        <div className="text-sm text-center">
+          Already have an account?{" "}
+
+          <Link
+            href={{
+              pathname:
+                process.env
+                  .NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT
+                || "/oauth/login",
+            }}
+            className="
+      text-blue-600
+      hover:underline
+    "
+          >
+            Sign in
+          </Link>
+        </div>
       </form>
     </div>
   );
