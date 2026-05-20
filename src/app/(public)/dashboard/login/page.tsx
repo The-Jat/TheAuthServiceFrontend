@@ -30,7 +30,7 @@ export default function LoginPage() {
       setError("");
 
       const response = await fetch(
-        "http://localhost:3000/dashboard/login",
+        `${process.env.NEXT_PUBLIC_OAUTH_BASE_URL}/dashboard/login}`,
         {
           method: "POST",
 
