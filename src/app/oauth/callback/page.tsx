@@ -12,10 +12,12 @@ function CallbackHandler() {
     async function exchangeCode() {
       const code = params.get("code");
 
+      console.log(`code: ${code}`);
+
       if (!code) return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_AUTH_API}/oauth/token`,
+        `${process.env.NEXT_PUBLIC_OAUTH_BASE_URL}/oauth/token`,
         {
           method: "POST",
 
@@ -25,11 +27,9 @@ function CallbackHandler() {
 
           body: JSON.stringify({
             code,
-
             client_id: "botble123",
-
             client_secret: "secret123",
-
+            code_verifier: "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
             redirect_uri:
               "http://localhost:3001/oauth/callback",
           }),
@@ -50,7 +50,7 @@ function CallbackHandler() {
         data.refresh_token
       );
 
-      window.location.href = "/dashboard";
+      // window.location.href = "/dashboard";
     }
 
     exchangeCode();

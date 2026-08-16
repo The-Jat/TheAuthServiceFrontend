@@ -35,4 +35,16 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## ToDo 
+## Docker
+
+Change in the .env or any other source file requires running the below command:
+
+```bash
+docker compose up -d --build
+```
+
+## Test
+
+```bash
+http://localhost:3001/oauth/login?code=b0ttjf9jvnu&redirect_uri=http%3A%2F%2Flocalhost:3001%2Foauth/callback&state=
+```
