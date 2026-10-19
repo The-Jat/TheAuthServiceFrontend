@@ -1,51 +1,23 @@
 # syntax=docker/dockerfile:1
-
-FROM node:22-alpine AS base
-RUN apk add --no-cache libc6-compat
-
-# ---------- Install deps ----------
-FROM base AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 
-# ---------- Build ----------
-FROM base AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+FROM deps AS build
 COPY . .
+ARG NEXT_PUBLIC_BRAND=TheJat
+ENV NEXT_PUBLIC_BRAND=$NEXT_PUBLIC_BRAND NEXT_TELEMETRY_DISABLED=1
+RUN rm -f .env .env.local && npm run build
 
-# Accept NEXT_PUBLIC_* values as build args and expose them as env vars
-# so Next.js can inline them during the build step
-ARG NEXT_PUBLIC_API_URL
-ARG NEXT_PUBLIC_OAUTH_BASE_URL
-ARG NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT
-ARG NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT
-
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_OAUTH_BASE_URL=$NEXT_PUBLIC_OAUTH_BASE_URL
-ENV NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT=$NEXT_PUBLIC_OAUTH_LOGIN_ENDPOINT
-ENV NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT=$NEXT_PUBLIC_OAUTH_SIGNUP_ENDPOINT
-
-ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
-
-# ---------- Production runtime ----------
-FROM base AS production
+FROM node:22-alpine AS runtime
 WORKDIR /app
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
-
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
-
-COPY --from=build /app/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
+COPY --from=build --chown=node:node /app/public ./public
+USER node
 EXPOSE 3000
-
-CMD ["node", "server.js"]
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
+  CMD wget -qO- http://127.0.0.1:3000/login >/dev/null || exit 1
+CMD ["node", "--max-old-space-size=160", "server.js"]

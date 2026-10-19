@@ -1,162 +1,231 @@
-"use client";
+import Link from 'next/link';
+import { Brand } from '@/components/brand';
+import { ThemeToggle } from '@/components/theme';
+import { BRAND } from '@/lib/brand';
+import { getPublicConfig } from '@/lib/server';
 
-import { ShieldCheck, Bell, Activity, Lock, ArrowRight, } from "lucide-react";
-import Link from "next/link";
+const MARQUEE = ['Passkeys', 'Single sign-on', 'OpenID Connect', 'PKCE everywhere', 'Refresh rotation', 'Session control', 'Email verification', 'Audit logs', 'Security alerts', 'Argon2id'];
 
-export default function Home() {
+const APPS = [
+  { name: 'Short', host: 'short.thejat.in', blurb: 'Links, QR codes and bio pages.' },
+  { name: 'Vault', host: 'vault.thejat.in', blurb: 'End-to-end encrypted passwords.' },
+  { name: 'TheJat.in', host: 'thejat.in', blurb: 'Articles, courses and notes.' },
+  { name: 'Your next app', host: 'anything.thejat.in', blurb: 'Register it in the console in a minute.' },
+];
+
+export default async function Home() {
+  const cfg = await getPublicConfig();
+  const letters = BRAND.toUpperCase().split('');
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,119,198,0.15),transparent_35%)]" />
-
-      {/* NAVBAR */}
-      <header className="relative z-10 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              Auth Platform
-            </h1>
-
-            <p className="text-xs text-zinc-400">
-              Distributed Identity Infrastructure
-            </p>
+    <>
+      <nav className="nav" aria-label="Primary">
+        <div className="nav-inner">
+          <div className="nav-group">
+            <Brand />
+            <ul className="nav-links">
+              <li style={{ display: 'flex' }}>
+                <a className="nav-link" href="#security">
+                  <span>Security</span>
+                </a>
+              </li>
+              <li style={{ display: 'flex' }}>
+                <a className="nav-link" href="#developers">
+                  <span>Developers</span>
+                </a>
+              </li>
+              <li style={{ display: 'flex' }}>
+                <a className="nav-link" href="#apps">
+                  <span>Apps</span>
+                </a>
+              </li>
+            </ul>
           </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/dashboard/login"
-              className="px-6 py-3 rounded-2xl border border-zinc-700 hover:border-zinc-500 transition"
-            >
-              Login
+          <div className="nav-group">
+            <ThemeToggle />
+            <Link className="nav-link" href="/login" style={{ borderLeft: '1px solid var(--line)', paddingInline: '1rem' }}>
+              <span>Sign in</span>
             </Link>
-            <button className="px-5 py-2.5 rounded-2xl bg-white text-black font-medium hover:bg-zinc-200 transition">
-              Signup
-            </button>
+            {cfg.allowSignup && (
+              <Link className="btn btn-primary nav-cta" href="/signup">
+                Create account
+              </Link>
+            )}
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* HERO */}
-      <section className="relative z-10">
-        <div className="max-w-7xl mx-auto px-6 py-28 lg:py-36">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-zinc-300 mb-8">
-              <Activity className="w-4 h-4" />
-              Event Driven Authentication Platform
+      <main id="main">
+        <section className="hero" aria-labelledby="hero-title">
+          <div className="hero-bg" aria-hidden />
+          <div className="hero-inner">
+            <div className="wordmark" role="img" aria-label={BRAND}>
+              <span aria-hidden>{letters.join('')}</span>
             </div>
-
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-tight">
-              Build modern
-              <span className="block text-zinc-400">
-                distributed auth systems
-              </span>
+            <h1 id="hero-title">
+              One account <span className="serif muted">for everything.</span>
             </h1>
-
-            <p className="mt-8 text-lg lg:text-xl text-zinc-400 max-w-2xl leading-8">
-              OAuth2, JWT sessions, centralized logging,
-              notifications, event-driven architecture,
-              RabbitMQ pipelines, and platform-level observability —
-              all in one ecosystem.
-            </p>
-
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <button className="group px-7 py-4 rounded-2xl bg-white text-black font-semibold flex items-center justify-center gap-2 hover:bg-zinc-200 transition">
-                Get Started
-
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-              </button>
-
-              <button className="px-7 py-4 rounded-2xl border border-white/10 hover:bg-white/5 transition">
-                Documentation
-              </button>
+            <p className="lede">Sign in once to every {BRAND} app. Passkeys instead of passwords, sessions you can see and end, and alerts when something changes.</p>
+            <div className="row" style={{ justifyContent: 'center', marginTop: '1.75rem' }}>
+              {cfg.allowSignup && (
+                <Link className="btn btn-primary btn-lg" href="/signup">
+                  Create your account
+                </Link>
+              )}
+              <Link className="btn btn-lg" href="/login">
+                Sign in
+              </Link>
+            </div>
+            <div className="hero-meta hud">
+              <span>OpenID Connect provider</span>
+              <span>Passkeys · Password</span>
+              <span>Free</span>
             </div>
           </div>
+        </section>
+
+        <div className="marquee hud" aria-hidden>
+          {[0, 1].map((n) => (
+            <ul key={n}>
+              {MARQUEE.map((m) => (
+                <li key={m}>{m}</li>
+              ))}
+            </ul>
+          ))}
         </div>
-      </section>
 
-      {/* FEATURES */}
-      <section className="relative z-10 pb-28">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-            {[
-              {
-                icon: Lock,
-                title: "OAuth2 + PKCE",
-                description:
-                  "Secure centralized authentication with modern OAuth flows.",
-              },
-              {
-                icon: Bell,
-                title: "Notifications",
-                description:
-                  "Email, SMS, push notifications powered by event consumers.",
-              },
-              {
-                icon: Activity,
-                title: "Event Driven",
-                description:
-                  "RabbitMQ powered microservice communication architecture.",
-              },
-              {
-                icon: ShieldCheck,
-                title: "Observability",
-                description:
-                  "Centralized logging and monitoring across all services.",
-              },
-            ].map((feature) => {
-              const Icon = feature.icon;
+        <section id="security" className="section" style={{ borderTop: 0 }}>
+          <div className="frame">
+            <span className="tick tick-tl" />
+            <span className="tick tick-tr" />
+            <div className="eyebrow hud">
+              <p>
+                <span className="num">01</span>
+                <span className="sep">/</span>Security
+              </p>
+              <p className="faint">Built to be boring for attackers</p>
+            </div>
+            <div className="section-head">
+              <h2>
+                Your keys, <span className="serif">not</span> our guesswork.
+              </h2>
+              <p>Every sign-in path follows the current standards, and every session is visible and revocable from your account.</p>
+            </div>
+            <div className="grid-lines cols-3">
+              <article className="feature">
+                <p className="glyph">A</p>
+                <h3>Passkeys first</h3>
+                <p>Sign in with your fingerprint, face or device PIN. Passkeys can’t be phished, reused or leaked.</p>
+              </article>
+              <article className="feature">
+                <p className="glyph">B</p>
+                <h3>Sessions you control</h3>
+                <p>See every device that’s signed in and end any of them. Changing your password signs out the rest.</p>
+              </article>
+              <article className="feature">
+                <p className="glyph">C</p>
+                <h3>Alerts that matter</h3>
+                <p>New device, new passkey, password changed: you hear about it immediately, by email.</p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-              return (
-                <div
-                  key={feature.title}
-                  className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6 hover:bg-white/[0.05] transition"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
-                    <Icon className="w-6 h-6" />
-                  </div>
+        <section id="developers" className="section">
+          <div className="frame">
+            <span className="tick tick-tl" />
+            <span className="tick tick-tr" />
+            <div className="eyebrow hud">
+              <p>
+                <span className="num">02</span>
+                <span className="sep">/</span>Developers
+              </p>
+              <p className="faint">Standard OpenID Connect</p>
+            </div>
+            <div className="section-head">
+              <h2>
+                Add <span className="serif">“Sign in with {BRAND}”</span> in minutes.
+              </h2>
+              <p>Register your app in the console, then point any OIDC library at the discovery document. Authorization code + PKCE, rotating refresh tokens, RS256-signed ID tokens.</p>
+            </div>
+            <pre className="codeblock">
+              <span className="c"># 1. Discover endpoints</span>
+              {'\n'}GET <span className="k">/api/.well-known/openid-configuration</span>
+              {'\n\n'}
+              <span className="c"># 2. Send the user to sign in (PKCE S256 required)</span>
+              {'\n'}GET <span className="k">/api/oauth/authorize</span>?response_type=code&amp;client_id=…&amp;redirect_uri=…&amp;scope=openid%20profile%20email&amp;code_challenge=…&amp;code_challenge_method=S256&amp;state=…
+              {'\n\n'}
+              <span className="c"># 3. Exchange the code on your server</span>
+              {'\n'}POST <span className="k">/api/oauth/token</span>{'  '}grant_type=authorization_code&amp;code=…&amp;code_verifier=…
+              {'\n\n'}
+              <span className="c"># 4. Read the profile</span>
+              {'\n'}GET <span className="k">/api/oauth/userinfo</span>{'  '}Authorization: Bearer …
+            </pre>
+          </div>
+        </section>
 
-                  <h3 className="mt-6 text-xl font-semibold">
-                    {feature.title}
-                  </h3>
-
-                  <p className="mt-3 text-zinc-400 leading-7">
-                    {feature.description}
+        <section id="apps" className="section">
+          <div className="frame">
+            <span className="tick tick-tl" />
+            <span className="tick tick-tr" />
+            <div className="eyebrow hud">
+              <p>
+                <span className="num">03</span>
+                <span className="sep">/</span>Ecosystem
+              </p>
+              <p className="faint">One login across the family</p>
+            </div>
+            <div className="section-head">
+              <h2>
+                Works <span className="serif">everywhere</span> you do.
+              </h2>
+            </div>
+            <div className="grid-lines cols-4">
+              {APPS.map((a, i) => (
+                <article key={a.name} className="feature">
+                  <p className="hud faint">{String(i + 1).padStart(2, '0')}</p>
+                  <h3>{a.name}</h3>
+                  <p>{a.blurb}</p>
+                  <p className="hud faint" style={{ marginTop: '1rem' }}>
+                    {a.host}
                   </p>
-                </div>
-              );
-            })}
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col lg:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="font-medium">
-              Auth Platform
-            </p>
-
-            <p className="text-sm text-zinc-500 mt-1">
-              Distributed Authentication Infrastructure
-            </p>
+        <section className="section">
+          <div className="frame" style={{ textAlign: 'center', padding: 'clamp(4rem, 10vw, 7rem) var(--gutter)' }}>
+            <p className="hud faint">Free · Takes a minute</p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)', letterSpacing: '-.045em', lineHeight: 0.98, marginTop: '1rem' }}>
+              Sign in <span className="serif">once.</span>
+            </h2>
+            <div className="row" style={{ justifyContent: 'center', marginTop: '2rem' }}>
+              <Link className="btn btn-primary btn-lg" href={cfg.allowSignup ? '/signup' : '/login'}>
+                {cfg.allowSignup ? 'Create your account' : 'Sign in'}
+              </Link>
+            </div>
           </div>
+        </section>
+      </main>
 
-          <div className="flex items-center gap-6 text-sm text-zinc-400">
-            <button className="hover:text-white transition">
-              Docs
-            </button>
-
-            <button className="hover:text-white transition">
-              GitHub
-            </button>
-
-            <button className="hover:text-white transition">
-              Dashboard
-            </button>
+      <footer className="footer">
+        <div className="frame">
+          <div className="footer-bottom hud">
+            <span>
+              © {new Date().getFullYear()} {BRAND}
+            </span>
+            <span className="row" style={{ ['--gap' as string]: '1.25rem' }}>
+              <Link href="/login">Sign in</Link>
+              <Link href="/account">Account</Link>
+              <a href="/api/.well-known/openid-configuration">OIDC discovery</a>
+            </span>
+          </div>
+          <div className="footer-giant" aria-hidden>
+            <span>{BRAND}</span>
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
